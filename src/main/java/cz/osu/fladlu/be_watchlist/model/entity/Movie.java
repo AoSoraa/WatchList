@@ -1,44 +1,27 @@
 package cz.osu.fladlu.be_watchlist.model.entity;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Data;
 
-import java.util.List;
-
+@Data
 @Entity
-@AllArgsConstructor
-@NoArgsConstructor
-@Getter
-@Setter
-@Table(name = "movies")
 public class Movie {
-
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
     private String title;
-
     private String note;
 
     @ManyToOne
+    @JoinColumn(name = "user_id")
     private User user;
 
-    @ManyToMany
-    @JoinTable(
-            name = "movie_genres",
-            joinColumns = @JoinColumn(name = "movie_id"),
-            inverseJoinColumns = @JoinColumn(name = "genre_id")
-    )
-    private List<Genre> genres;
+    @ManyToOne
+    @JoinColumn(name = "director_id")
+    private Director director;
 
-    @ManyToMany
-    @JoinTable(
-            name = "movie_directors",
-            joinColumns = @JoinColumn(name = "movie_id"),
-            inverseJoinColumns = @JoinColumn(name = "director_id")
-    )
-    private List<Director> directors;
-
-
+    @ManyToOne
+    @JoinColumn(name = "genre_id")
+    private Genre genre;
 }
