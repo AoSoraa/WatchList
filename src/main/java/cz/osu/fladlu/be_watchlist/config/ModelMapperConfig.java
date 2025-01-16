@@ -15,16 +15,6 @@ public class ModelMapperConfig {
         ModelMapper modelMapper = new ModelMapper();
         modelMapper.getConfiguration().setSkipNullEnabled(true);
 
-        // Custom mapping for MovieCreateDTO to Movie
-        modelMapper.addMappings(new PropertyMap<MovieCreateDTO, Movie>() {
-            @Override
-            protected void configure() {
-                map().getUser().setId(source.getUserId());
-                map().getDirector().setId(source.getDirectorId());
-                map().getGenre().setId(source.getGenreId());
-            }
-        });
-
         return modelMapper;
     }
 }

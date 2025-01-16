@@ -20,8 +20,7 @@ public class MovieController {
 
     @GetMapping(value = "/{id}", produces = "application/json")
     public ResponseEntity<MovieDTO> getMovieById(@PathVariable Long id) {
-        MovieDTO movieDTO = movieService.getMovieById(id);
-        return ResponseEntity.ok(movieDTO);
+        return ResponseEntity.ok(movieService.getMovieById(id));
     }
 
     @GetMapping(produces = "application/json")
@@ -31,7 +30,7 @@ public class MovieController {
     }
 
     @PostMapping("createMovie")
-    public ResponseEntity<MovieDTO> createMovie(@Valid @RequestBody MovieCreateDTO movieCreateDTO) {
+    public ResponseEntity<MovieDTO> createMovie(@RequestBody MovieCreateDTO movieCreateDTO) {
         return ResponseEntity.ok(movieService.createMovie(movieCreateDTO));
     }
 

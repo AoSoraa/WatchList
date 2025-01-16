@@ -1,10 +1,14 @@
 package cz.osu.fladlu.be_watchlist.model.entity;
 
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.*;
 
-@Data
 @Entity
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@Table(name = "movies")
 public class Movie {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,10 +22,10 @@ public class Movie {
     private User user;
 
     @ManyToOne
-    @JoinColumn(name = "director_id")
+    @JoinColumn(name = "director_id", nullable = true)
     private Director director;
 
     @ManyToOne
-    @JoinColumn(name = "genre_id")
+    @JoinColumn(name = "genre_id", nullable = true)
     private Genre genre;
 }

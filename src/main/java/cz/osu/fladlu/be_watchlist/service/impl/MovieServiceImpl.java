@@ -2,6 +2,8 @@ package cz.osu.fladlu.be_watchlist.service.impl;
 
 import cz.osu.fladlu.be_watchlist.model.dto.movie.MovieCreateDTO;
 import cz.osu.fladlu.be_watchlist.model.dto.movie.MovieDTO;
+import cz.osu.fladlu.be_watchlist.model.entity.Director;
+import cz.osu.fladlu.be_watchlist.model.entity.Genre;
 import cz.osu.fladlu.be_watchlist.model.entity.Movie;
 import cz.osu.fladlu.be_watchlist.repository.MovieRepository;
 import cz.osu.fladlu.be_watchlist.repository.UserRepository;
@@ -38,14 +40,20 @@ public class MovieServiceImpl implements MovieService {
 
     @Override
     public MovieDTO createMovie(MovieCreateDTO movieCreateDTO) {
-        var movie = modelMapper.map(movieCreateDTO, Movie.class);
-        movie.setUser(userRepository.findById(movieCreateDTO.getUserId())
-                .orElseThrow(() -> new RuntimeException("User not found")));
-        movie.setDirector(directorRepository.findById(movieCreateDTO.getDirectorId())
-                .orElseThrow(() -> new RuntimeException("Director not found")));
-        movie.setGenre(genreRepository.findById(movieCreateDTO.getGenreId())
-                .orElseThrow(() -> new RuntimeException("Genre not found")));
-        return modelMapper.map(movieRepository.save(movie), MovieDTO.class);
+        var movie = new Movie();
+
+        movie.setTitle(movieCreateDTO.getTitle());
+        movie.setNote(movieCreateDTO.getNote());
+
+        Genre genre = genreRepository.findById(movieCreateDTO.getGenreId())
+                .orElseThrow(() -> new RuntimeException("Genre not found"));
+        movie.setGenre(genre);
+
+        Director director = directorRepository.findById(movieCreateDTO.getDirectorId())
+                .orElseThrow(() -> new RuntimeException("Director not found"));
+        movie.setDirector(director);
+
+        return modelMapper.map(movie, MovieDTO.class);
     }
 
     @Override
