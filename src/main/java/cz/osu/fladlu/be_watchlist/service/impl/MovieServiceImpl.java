@@ -47,7 +47,7 @@ public class MovieServiceImpl implements MovieService {
 
         Genre genre = genreRepository.findById(movieCreateDTO.getGenreId())
                 .orElseThrow(() -> new RuntimeException("Genre not found"));
-        movie.setGenre(genre);
+        movie.addGenre(genre);
 
         Director director = directorRepository.findById(movieCreateDTO.getDirectorId())
                 .orElseThrow(() -> new RuntimeException("Director not found"));
@@ -65,7 +65,7 @@ public class MovieServiceImpl implements MovieService {
                 .orElseThrow(() -> new RuntimeException("User not found")));
         movie.setDirector(directorRepository.findById(movieCreateDTO.getDirectorId())
                 .orElseThrow(() -> new RuntimeException("Director not found")));
-        movie.setGenre(genreRepository.findById(movieCreateDTO.getGenreId())
+        movie.addGenre(genreRepository.findById(movieCreateDTO.getGenreId())
                 .orElseThrow(() -> new RuntimeException("Genre not found")));
         return modelMapper.map(movieRepository.save(movie), MovieDTO.class);
     }

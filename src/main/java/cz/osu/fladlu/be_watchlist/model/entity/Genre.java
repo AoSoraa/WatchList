@@ -1,10 +1,10 @@
 package cz.osu.fladlu.be_watchlist.model.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.*;
+import org.modelmapper.internal.bytebuddy.utility.dispatcher.JavaDispatcher;
+
+import java.util.Set;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -17,4 +17,7 @@ public class Genre {
     private Long id;
 
     private String name;
+
+    @ManyToMany(mappedBy = "genres")
+    private Set<Movie> movies;
 }

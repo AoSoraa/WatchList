@@ -8,7 +8,9 @@ import cz.osu.fladlu.be_watchlist.service.UserService;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -17,6 +19,9 @@ import org.springframework.stereotype.Service;
 public class UserServiceImpl implements UserService {
     private final ModelMapper modelMapper;
     private final UserRepository userRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     public UserServiceImpl(ModelMapper modelMapper, UserRepository userRepository) {
         this.modelMapper = modelMapper;
@@ -34,7 +39,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDTO createUser(UserCreateDTO userCreateDTO) {
-        return modelMapper.map(userRepository.save(modelMapper.map(userCreateDTO, User.class)), UserDTO.class);
+        User user = new User();
+        user.setUsername(userCreateDTO.getUsername());
+        user.setPassword(userCreateDTO.getPassword());
+        return modelMapper.map(userRepository.save(user), UserDTO.class);
     }
 
     @Override

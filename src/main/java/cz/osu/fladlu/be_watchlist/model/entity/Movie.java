@@ -3,6 +3,9 @@ package cz.osu.fladlu.be_watchlist.model.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @Entity
 @Getter
 @Setter
@@ -25,7 +28,16 @@ public class Movie {
     @JoinColumn(name = "director_id", nullable = true)
     private Director director;
 
-    @ManyToOne
-    @JoinColumn(name = "genre_id", nullable = true)
-    private Genre genre;
+    @ManyToMany
+    @JoinTable(
+            name = "movie_genres",
+            joinColumns = @JoinColumn(name= "movie_id"),
+            inverseJoinColumns = @JoinColumn(name = "genre_id")
+    )
+
+    private Set<Genre> genres = new HashSet<>();
+
+    public void addGenre(Genre genre) {
+        this.genres.add(genre);
+    }
 }
