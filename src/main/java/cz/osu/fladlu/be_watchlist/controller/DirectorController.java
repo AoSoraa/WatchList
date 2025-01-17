@@ -30,7 +30,7 @@ public class DirectorController {
         return ResponseEntity.ok(directorService.getDirectorById(id));
     }
 
-    @PostMapping("createDirector")
+    @PostMapping("/createDirector")
     public ResponseEntity<DirectorDTO> createDirector(@RequestBody DirectorCreateDTO directorCreateDTO) {
         return ResponseEntity.ok(directorService.createDirector(directorCreateDTO));
     }

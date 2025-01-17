@@ -6,6 +6,7 @@ import cz.osu.fladlu.be_watchlist.service.GenreService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,9 +29,10 @@ public class GenreController {
         return ResponseEntity.ok(genreService.getGenreById(id));
     }
 
-    @PostMapping("createGenre")
+    @PostMapping(consumes = "application/json", produces = "application/json")
     public ResponseEntity<GenreDTO> createGenre(@RequestBody GenreCreateDTO genreCreateDTO) {
-        return ResponseEntity.ok(genreService.createGenre(genreCreateDTO));
+        GenreDTO genre = genreService.createGenre(genreCreateDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).body(genre);
     }
 
     @PutMapping(value = "/{id}", consumes = "application/json", produces = "application/json")

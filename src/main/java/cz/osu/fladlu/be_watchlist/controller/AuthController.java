@@ -1,6 +1,7 @@
 package cz.osu.fladlu.be_watchlist.controller;
 
-import cz.osu.fladlu.be_watchlist.config.JwtResponse;
+import cz.osu.fladlu.be_watchlist.jwt.JwtResponse;
+import cz.osu.fladlu.be_watchlist.jwt.JwtUtil;
 import cz.osu.fladlu.be_watchlist.model.dto.user.UserCreateDTO;
 import cz.osu.fladlu.be_watchlist.model.dto.user.UserDTO;
 import cz.osu.fladlu.be_watchlist.service.UserService;
@@ -11,7 +12,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -25,13 +26,22 @@ public class AuthController {
     private UserService userService;
 
     @Autowired
-    private cz.osu.fladlu.be_watchlist.util.JwtUtil jwtUtil;
+    private JwtUtil jwtUtil;
 
     @PostMapping("/signup")
     public UserDTO signup(@RequestBody UserCreateDTO userCreateDTO) {
         return userService.createUser(userCreateDTO);
     }
 
+    @GetMapping("/validateToken")
+    public String validateToken() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && authentication.isAuthenticated()) {
+            return "Token is valid";
+        } else {
+            return "Token is invalid";
+        }
+    }
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody UserCreateDTO loginDTO) throws Exception {
         System.out.println("Authenticating user: " + loginDTO.getUsername());
@@ -50,5 +60,7 @@ public class AuthController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Authentication failed");
         }
     }
+
+
 
 }

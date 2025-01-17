@@ -29,7 +29,7 @@ public class MovieController {
         return ResponseEntity.ok(movies);
     }
 
-    @PostMapping("createMovie")
+    @PostMapping("/createMovie")
     public ResponseEntity<MovieDTO> createMovie(@RequestBody MovieCreateDTO movieCreateDTO) {
         return ResponseEntity.ok(movieService.createMovie(movieCreateDTO));
     }

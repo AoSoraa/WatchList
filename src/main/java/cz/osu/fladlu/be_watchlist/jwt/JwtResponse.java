@@ -1,4 +1,4 @@
-package cz.osu.fladlu.be_watchlist.config;
+package cz.osu.fladlu.be_watchlist.jwt;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
