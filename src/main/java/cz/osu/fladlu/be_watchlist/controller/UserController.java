@@ -12,15 +12,12 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/users")
+@RequiredArgsConstructor
 public class UserController {
 
     private final UserService userService;
 
-    public UserController(@Autowired UserService userService) {
-        this.userService = userService;
-    }
-
-    @GetMapping
+    @GetMapping(produces = "application/json")
     public Page<UserDTO> getAllUsers(Pageable pageable) {
         return userService.getAllUsers(pageable);
     }
