@@ -1,5 +1,6 @@
 package cz.osu.fladlu.be_watchlist.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -27,6 +28,7 @@ public class User {
     private String password;
 
     @OneToMany(mappedBy = "user")
+    @JsonManagedReference
     private List<Movie> movies;
 
 
