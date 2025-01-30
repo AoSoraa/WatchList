@@ -4,7 +4,9 @@ import cz.osu.fladlu.be_watchlist.jwt.JwtResponse;
 import cz.osu.fladlu.be_watchlist.jwt.JwtUtil;
 import cz.osu.fladlu.be_watchlist.model.dto.user.UserCreateDTO;
 import cz.osu.fladlu.be_watchlist.model.dto.user.UserDTO;
+import cz.osu.fladlu.be_watchlist.repository.UserRepository;
 import cz.osu.fladlu.be_watchlist.service.UserService;
+import cz.osu.fladlu.be_watchlist.service.impl.AuthenticationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +22,7 @@ import org.springframework.web.bind.annotation.*;
 public class AuthController {
 
     @Autowired
-    private AuthenticationManager authenticationManager;
+    private AuthenticationService authenticationService;
 
     @Autowired
     private UserService userService;
@@ -44,21 +46,9 @@ public class AuthController {
     }
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody UserCreateDTO loginDTO) throws Exception {
-        System.out.println("Authenticating user: " + loginDTO.getUsername());
-
-        try {
-            Authentication authentication = authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(loginDTO.getUsername(), loginDTO.getPassword())
-            );
-
-            String jwtToken = jwtUtil.generateToken(loginDTO.getUsername());
-            System.out.println("Authentication successful for user: " + loginDTO.getUsername());
-
-            return ResponseEntity.ok(new JwtResponse(jwtToken));
-        } catch (AuthenticationException e) {
-            System.out.println("Authentication failed for user: " + loginDTO.getUsername());
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Authentication failed");
-        }
+        var authenticatedUser = authenticationService.authenticate(loginDTO);
+        var token = jwtUtil.generateToken(authenticatedUser);
+        return ResponseEntity.ok(token);
     }
 
 
