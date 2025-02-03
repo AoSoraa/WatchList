@@ -29,7 +29,7 @@ public class GenreController {
         return ResponseEntity.ok(genreService.getGenreById(id));
     }
 
-    @PostMapping(consumes = "application/json", produces = "application/json")
+    @PostMapping("/createGenre")
     public ResponseEntity<GenreDTO> createGenre(@RequestBody GenreCreateDTO genreCreateDTO) {
         GenreDTO genre = genreService.createGenre(genreCreateDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(genre);
